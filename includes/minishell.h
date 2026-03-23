@@ -140,16 +140,15 @@ void	print_tokens(t_token *head);
 char	*token_type_str(t_token_type type);
 
 /* ------------------------------------------------------------------ */
-/*  stubs.c — Fases 3 e 5 temporárias (apagar quando implementares)   */
+/*  parser.c                                                           */
 /* ------------------------------------------------------------------ */
 
 t_cmd	*parser(t_token *tokens);
-int		executor(t_shell *shell, t_cmd *cmds);
 void	free_cmds(t_cmd *cmds);
 
-/* ------------------------------------------------------------------ */
+/*---------------------------------------------------------------------- */
 /*  Funções da libft usadas                                             */
-/* ------------------------------------------------------------------ */
+/* ------------------------------------------------------------------- */
 
 void	*ft_memset(void *s, int c, size_t n);
 char	*ft_strdup(const char *s);
@@ -158,4 +157,5 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
+void	run_shell(t_shell *shell);
 # endif

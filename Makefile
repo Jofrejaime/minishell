@@ -3,7 +3,9 @@
 #   Makefile — Minishell                                                       #
 #                                                                              #
 #   Hierarquia:                                                                #
-#     src/      — todos os .c                                                  #
+#     src/      — .c organizados por subpastas                                 #
+#       general_utils/                                                         #
+#       lexer/                                                                 #
 #     includes/ — todos os .h                                                  #
 #     obj/      — todos os .o (gerados automaticamente)                        #
 #     libft/    — biblioteca libft                                             #
@@ -39,16 +41,17 @@ INCLUDES    := -I$(INC_DIR) -I$(LIBFT_DIR)
 #  Fontes — adiciona novos .c aqui                                              #
 # ---------------------------------------------------------------------------- #
 
-SRCS        :=  free.c              \
-                inits.c             \
-                read_input.c        \
-                run_shell.c         \
-                sinais.c            \
-                lexer.c             \
-                lexer_word.c        \
-                lexer_operator.c    \
-                lexer_utils.c       \
-                stubs.c
+SRCS        :=  general_utils/free.c              \
+                general_utils/inits.c             \
+                general_utils/read_input.c        \
+                general_utils/run_shell.c         \
+                general_utils/sinais.c            \
+                lexer/lexer.c                     \
+                lexer/lexer_word.c                \
+                lexer/lexer_operator.c            \
+				lexer/lexer_utils.c               \
+				parser/parser.c                   \
+				main.c
 
 SRC_FILES   := $(addprefix $(SRC_DIR)/, $(SRCS))
 OBJ_FILES   := $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
@@ -78,6 +81,7 @@ $(OBJ_DIR):
 # src/ficheiro.c -> obj/ficheiro.o
 # Recompila se qualquer .h em includes/ mudar
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/minishell.h | $(OBJ_DIR)
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # ---------------------------------------------------------------------------- #

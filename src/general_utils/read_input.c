@@ -54,8 +54,10 @@ void	process_input(t_shell *shell, char *input)
 	cmds = parser(tokens);
 	free_tokens(tokens);
 	if (!cmds)
+	{
+		shell->exit_status = g_exit_status;
 		return ;
-	g_exit_status = executor(shell, cmds);
-	shell->exit_status = g_exit_status;
+	}
 	free_cmds(cmds);
+	shell->exit_status = g_exit_status;
 }
