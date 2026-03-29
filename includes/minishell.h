@@ -144,7 +144,21 @@ char	*token_type_str(t_token_type type);
 /* ------------------------------------------------------------------ */
 
 t_cmd	*parser(t_token *tokens);
+
+/* ------------------------------------------------------------------ */
+/*  parser_utils.c                                                    */
+/* ------------------------------------------------------------------ */
+
+int		is_redirection(t_token_type type);
+int		parser_error(const char *msg);
+int		args_len(char **args);
 void	free_cmds(t_cmd *cmds);
+
+/* ------------------------------------------------------------------ */
+/*  parser_cmds.c                                                     */
+/* ------------------------------------------------------------------ */
+t_cmd	*parse_one_command(t_token **cur);
+int		append_cmd(t_cmd **head, t_cmd *new_cmd);
 
 /*---------------------------------------------------------------------- */
 /*  Funções da libft usadas                                             */

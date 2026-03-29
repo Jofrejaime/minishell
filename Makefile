@@ -51,6 +51,8 @@ SRCS        :=  general_utils/free.c              \
                 lexer/lexer_operator.c            \
 				lexer/lexer_utils.c               \
 				parser/parser.c                   \
+				parser/parser_cmds.c              \
+				parser/parser_utils.c            \
 				main.c
 
 SRC_FILES   := $(addprefix $(SRC_DIR)/, $(SRCS))
