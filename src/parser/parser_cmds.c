@@ -16,7 +16,7 @@ static t_cmd	*new_cmd(void)
 
 static int	append_arg(t_cmd *cmd, const char *value)
 {
-	int		count;
+	int		count; 
 	char	**new_args;
 	int		i;
 
@@ -44,16 +44,36 @@ static int	append_arg(t_cmd *cmd, const char *value)
 
 static int	parse_redirection(t_cmd *cmd, t_token **cur)
 {
-	t_token	*next;
+	t_token *next;
+	t_redir	*r;
 
 	next = (*cur)->next;
 	if (!next || next->type != TOKEN_WORD)
 		return (parser_error("redirection without target"));
-	free(cmd->redir_file);
-	cmd->redir_type = (*cur)->type;
-	cmd->redir_file = ft_strdup(next->value);
-	if (!cmd->redir_file)
+	r = malloc(sizeof(t_redir));
+	if (!r)
 		return (-1);
+	if ((*cur)->type == TOKEN_REDIR_IN)
+		r->type = REDIR_IN;
+	else if ((*cur)->type == TOKEN_REDIR_OUT)
+		r->type = REDIR_OUT;
+	else if ((*cur)->type == TOKEN_APPEND)
+		r->type = REDIR_APPEND;
+	else if ((*cur)->type == TOKEN_HEREDOC)
+		r->type = REDIR_HEREDOC;
+	else
+	{
+		free(r);
+		return (parser_error("unknown redirection"));
+	}
+	r->file = ft_strdup(next->value);
+	if (!r->file)
+	{
+		free(r);
+		return (-1);
+	}
+	r->next = NULL;
+	add_redir_for_cmd(cmd, r);
 	*cur = next->next;
 	return (0);
 }

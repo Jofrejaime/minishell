@@ -204,8 +204,12 @@ int is_n_flag(char *str);
 /*--------------------------------------------------------------------- */
 /*  Redirection				                                           */
 /* ------------------------------------------------------------------- */
-int	redirection(t_cmd *cmd);
-int	apply_redirections(t_redir *redir);
+int	redirection(t_cmd *cmd, int prev_fd);
+int	apply_redirections(t_redir *redir, int prev_fd);
+/* External mapping of redirections per command (parser fills this) */
+void	add_redir_for_cmd(t_cmd *cmd, t_redir *redir);
+t_redir *get_redirs_for_cmd(t_cmd *cmd);
+void	clear_cmd_redirs(void);
 int	handle_heredoc(char *delimiter);
 
 /*---------------------------------------------------------------------- */

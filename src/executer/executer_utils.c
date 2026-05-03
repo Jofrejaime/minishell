@@ -3,16 +3,20 @@
 static void child_process_execve(t_cmd *cmds, char **envp, int prev_fd, int fd[2])
 {
         if (prev_fd != -1)
-        {
-                dup2(prev_fd, STDIN_FILENO);
-                close(prev_fd);
-        }
-        if (cmds->next)
-        {
-                close(fd[0]);
+		{
+			dup2(prev_fd, STDIN_FILENO);
+				close(prev_fd);
+		}
+		if (cmds->next)
+		{
+				close(fd[0]);
                 dup2(fd[1], STDOUT_FILENO);
                 close(fd[1]);
         }
+		if (redirection(cmds, prev_fd) < 0)
+                exit(1);
+		if (!cmds->args || !cmds->args[0])
+			exit(0);
         char *cmd_full = find_in_path(cmds->args[0], envp);
         if (!cmd_full)
         {
@@ -54,15 +58,42 @@ int	run_cmd(t_cmd *cmds, char **envp)
 
 	while (cmds)
 	{
+		if (!cmds->args || !cmds->args[0])
+		{
+			if (redirection(cmds, prev_fd) < 0)
+				return (1);
+			cmds = cmds->next;
+			continue ;
+		}
 		if (is_builtin(cmds->args[0]))
 		{
-			if (!execute_builtin(cmds))		
+			int stdin_copy = dup(STDIN_FILENO);
+			int stdout_copy = dup(STDOUT_FILENO);
+			if (redirection(cmds, prev_fd) < 0)
+			{
+				dup2(stdin_copy, STDIN_FILENO);
+				dup2(stdout_copy, STDOUT_FILENO);
+				close(stdin_copy);
+				close(stdout_copy);
 				return (1);
+			}
+			if (!execute_builtin(cmds))
+			{
+				dup2(stdin_copy, STDIN_FILENO);
+				dup2(stdout_copy, STDOUT_FILENO);
+				close(stdin_copy);
+				close(stdout_copy);
+				return (1);
+			}
+			dup2(stdin_copy, STDIN_FILENO);
+			dup2(stdout_copy, STDOUT_FILENO);
+			close(stdin_copy);
+			close(stdout_copy);
 		}
 		else
 		if (!commands_iteration(cmds, envp, &prev_fd, fd))
-                        return (1);
-                cmds = cmds->next;
+  			return (1);
+		cmds = cmds->next;
 	}
 	while (wait(&status) > 0)
 		;

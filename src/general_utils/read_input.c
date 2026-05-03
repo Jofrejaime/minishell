@@ -59,6 +59,7 @@ void	process_input(t_shell *shell, char *input)
 		shell->exit_status = g_exit_status;
 		return ;
 	}
+	clear_cmd_redirs();
 	free_cmds(cmds);
 	shell->exit_status = g_exit_status;
 }

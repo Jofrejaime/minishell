@@ -96,10 +96,16 @@ static int handle_heredoc_direction(char *delimiter)
         return (0);
 }
 
-int apply_redirections(t_redir *redir)
+int apply_redirections(t_redir *redir, int prev_fd)
 {
         while (redir)
         {
+                if (prev_fd != -1 && (redir->type == REDIR_IN || redir->type == REDIR_HEREDOC))
+                {
+                        /* skip input redirections when input comes from previous pipe */
+                        redir = redir->next;
+                        continue;
+                }
                 if (redir->type == REDIR_IN && handle_input_direction(redir->file) < 0)
                         return (-1);
                 else if (redir->type == REDIR_OUT && handle_output_direction(redir->file) < 0)
