@@ -8,7 +8,7 @@
 #       lexer/                                                                 #
 #     includes/ — todos os .h                                                  #
 #     obj/      — todos os .o (gerados automaticamente)                        #
-#     libft/    — biblioteca libft                                             #
+#     mini_libft/    — biblioteca libft                                             #
 #                                                                              #
 #   make          →  compila o shell normal                                    #
 #   make debug    →  modo DEBUG_LEXER: imprime tokens após cada input          #
@@ -29,13 +29,14 @@ CFLAGS      := -Wall -Wextra -Werror -g3
 SRC_DIR     := src
 INC_DIR     := includes
 OBJ_DIR     := obj
-LIBFT_DIR   := libft
+LIBFT_DIR   := mini_libft
+GNL_DIR     := get_next_line
 
 # ---------------------------------------------------------------------------- #
 #  Includes                                                                     #
 # ---------------------------------------------------------------------------- #
 
-INCLUDES    := -I$(INC_DIR) -I$(LIBFT_DIR)
+INCLUDES    := -I$(INC_DIR) -I$(LIBFT_DIR) -I$(GNL_DIR)
 
 # ---------------------------------------------------------------------------- #
 #  Fontes — adiciona novos .c aqui                                              #
@@ -52,11 +53,18 @@ SRCS        :=  general_utils/free.c              \
 				lexer/lexer_utils.c               \
 				parser/parser.c                   \
 				parser/parser_cmds.c              \
-				parser/parser_utils.c            \
+				parser/parser_utils.c             \
+				executer/executer.c               \
+				executer/executer_utils.c          \
+				general_utils/bilt_ins_utils.c    \
+				bilt_in/ft_echo.c                   \
 				main.c
 
+GNL_FILES   := get_next_line_bonus.c
+
 SRC_FILES   := $(addprefix $(SRC_DIR)/, $(SRCS))
-OBJ_FILES   := $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
+GNL_SRC_FILES := $(addprefix $(GNL_DIR)/, $(GNL_FILES))
+OBJ_FILES   := $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o)) $(addprefix $(OBJ_DIR)/, $(GNL_FILES:.c=.o))
 
 # ---------------------------------------------------------------------------- #
 #  Libft                                                                        #
@@ -84,6 +92,10 @@ $(OBJ_DIR):
 # Recompila se qualquer .h em includes/ mudar
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/minishell.h | $(OBJ_DIR)
 	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# get_next_line/ficheiro.c -> obj/ficheiro.o
+$(OBJ_DIR)/get_next_line_bonus.o: $(GNL_DIR)/get_next_line_bonus.c $(GNL_DIR)/get_next_line_bonus.h | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # ---------------------------------------------------------------------------- #

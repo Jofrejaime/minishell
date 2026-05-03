@@ -34,3 +34,16 @@ void    free_env(char **env)
     }
     free(env);
 }
+
+void	free_array(char	**dirs)
+{
+	int i;
+	i = 0;
+
+	while(dirs[i])
+	{
+		free(dirs[i]);
+		i++;
+	}
+	free(dirs);
+}

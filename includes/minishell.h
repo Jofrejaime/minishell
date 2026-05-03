@@ -19,6 +19,27 @@
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "libft.h"
+# include "get_next_line_bonus.h"
+
+
+//heredoc structs
+typedef enum e_redir_type
+{
+    REDIR_IN,      // <
+    REDIR_OUT,     // >
+    REDIR_APPEND,  // >>
+    REDIR_HEREDOC  // <<
+} t_redir_type;
+
+typedef struct s_redir
+{
+    t_redir_type type;
+    char *file;        // ou delimiter
+    struct s_redir *next;
+} t_redir;
+
+//
 
 /* ------------------------------------------------------------------ */
 /*  Variável global — única permitida pela norma 42                    */
@@ -59,7 +80,7 @@ typedef struct s_cmd
 {
 	char			**args;
 	t_token_type	redir_type;
-	char			*redir_file;
+	char		*redir_file;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -161,15 +182,37 @@ t_cmd	*parse_one_command(t_token **cur);
 int		append_cmd(t_cmd **head, t_cmd *new_cmd);
 
 /*---------------------------------------------------------------------- */
+/*  executer                                          */
+/* ------------------------------------------------------------------- */
+
+void	free_array(char	**dirs);
+char	*find_in_path(char *cmd, char **envp);
+int run_cmd(t_cmd *cmds, char **envp);
+void	executer(t_shell *shell, t_cmd *cmds);
+
+
+/*---------------------------------------------------------------------- */
+/* Bilt_in                                            */
+/* ------------------------------------------------------------------- */
+
+void ft_echo_print_arguments(char **args, int start_index);
+int ft_echo(char **args);
+int execute_builtin(t_cmd *cmd);
+int is_builtin(char *cmd);
+int is_n_flag(char *str);
+
+/*---------------------------------------------------------------------- */
 /*  Funções da libft usadas                                             */
 /* ------------------------------------------------------------------- */
 
+/*char  **ft_split(char *src, char c);
 void	*ft_memset(void *s, int c, size_t n);
 char	*ft_strdup(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+void	ft_putstr_fd(char *s, int fd);*/
 
 void	run_shell(t_shell *shell);
 # endif

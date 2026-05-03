@@ -1,0 +1,15 @@
+minishel
+*/**.o
+*/**.a
+*/**.so
+*/**.dylib
+*/**.dll
+*/**.exe
+*/**.out
+*/**.log
+*/**.tmp
+*/**.cache
+*/**.DS_Store
+*/**.vscode
+*/**.idea
+*/**.vs

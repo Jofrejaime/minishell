@@ -52,6 +52,7 @@ void	process_input(t_shell *shell, char *input)
 	if (!tokens)
 		return ;
 	cmds = parser(tokens);
+	executer(shell, cmds);
 	free_tokens(tokens);
 	if (!cmds)
 	{
