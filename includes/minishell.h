@@ -201,9 +201,17 @@ int execute_builtin(t_cmd *cmd);
 int is_builtin(char *cmd);
 int is_n_flag(char *str);
 
+/*--------------------------------------------------------------------- */
+/*  Redirection				                                           */
+/* ------------------------------------------------------------------- */
+int	redirection(t_cmd *cmd);
+int	apply_redirections(t_redir *redir);
+int	handle_heredoc(char *delimiter);
+
 /*---------------------------------------------------------------------- */
 /*  Funções da libft usadas                                             */
 /* ------------------------------------------------------------------- */
+
 
 /*char  **ft_split(char *src, char c);
 void	*ft_memset(void *s, int c, size_t n);

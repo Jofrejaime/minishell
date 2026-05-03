@@ -56,6 +56,9 @@ SRCS        :=  general_utils/free.c              \
 				parser/parser_utils.c             \
 				executer/executer.c               \
 				executer/executer_utils.c          \
+				redirection/redirection.c          \
+				redirection/redirection_handlers.c \
+				redirection/heredoc.c              \
 				general_utils/bilt_ins_utils.c    \
 				bilt_in/ft_echo.c                   \
 				main.c
